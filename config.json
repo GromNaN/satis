@@ -1,0 +1,8 @@
+{
+    "name": "My GitLab Repository",
+    "homepage": "http://packages.example.org",
+    "repositories": [
+        { "type": "vcs", "url": "http://gitlab.com/GromNaN/symfony.git" }
+    ],
+    "require-all": true
+}

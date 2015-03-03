@@ -5,6 +5,9 @@
     "homepage": "https://github.com/composer/satis",
     "type": "library",
     "license": "MIT",
+    "repositories": [
+        { "type": "vcs", "url": "https://github.com/GromNaN/composer.git" }
+    ],
     "authors": [
         {
             "name": "Jordi Boggiano",
@@ -20,7 +23,7 @@
     "bin": ["bin/satis"],
     "require": {
         "php": ">=5.3.2",
-        "composer/composer": "1.0.*@dev",
+        "composer/composer": "dev-gitlab",
         "twig/twig": "~1.7",
         "symfony/console": "~2.1"
     },
