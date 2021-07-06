@@ -69,12 +69,7 @@ class ArchiveBuilderTest extends TestCase
 
         $downloadManager = $this->getMockBuilder(DownloadManager::class)->disableOriginalConstructor()->getMock();
         $downloadManager->method('download')->will(
-            $this->returnCallback(
-                function ($package, $source) {
-                    $filesystem = new Filesystem();
-                    $filesystem->dumpFile(realpath($source) . '/' . 'README.md', '# The demo archive.');
-                }
-            )
+            $this->returnCallback(fn ($package, $source) => (new Filesystem())->dumpFile(realpath($source) . '/' . 'README.md', '# The demo archive.'))
         );
 
         $archiveManager = $this->getMockBuilder(ArchiveManager::class)->disableOriginalConstructor()->getMock();

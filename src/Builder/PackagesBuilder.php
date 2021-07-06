@@ -179,9 +179,7 @@ class PackagesBuilder extends Builder
             // Sort to-be-pruned files base on ctime, latest first.
             usort(
                 $files,
-                function (\SplFileInfo $fileA, \SplFileInfo $fileB) {
-                    return $fileB->getCTime() <=> $fileA->getCTime();
-                }
+                static fn (\SplFileInfo $fileA, \SplFileInfo $fileB) => $fileB->getCTime() <=> $fileA->getCTime()
             );
             // If configured, skip files from the to-be-pruned files by offset.
             $files = array_splice($files, $offset);

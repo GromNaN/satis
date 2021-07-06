@@ -155,9 +155,7 @@ class PackageSelection
 
         $repos = $initialRepos = $composer->getRepositoryManager()->getRepositories();
 
-        $stabilityFlags = array_map(function ($value) {
-            return BasePackage::$stabilities[$value];
-        }, $this->minimumStabilityPerPackage);
+        $stabilityFlags = array_map(static fn ($value) => BasePackage::$stabilities[$value], $this->minimumStabilityPerPackage);
 
         if ($this->hasRepositoryFilter()) {
             $repos = $this->filterRepositories($repos);
@@ -193,9 +191,7 @@ class PackageSelection
             $this->addRepositories($repositorySet, $repos);
             // dependencies of required packages might have changed and be part of filtered repos
             if ($this->hasRepositoryFilter() && true !== $this->repositoryFilterDep) {
-                $this->addRepositories($repositorySet, \array_filter($initialRepos, function ($r) use ($repos) {
-                    return false === \in_array($r, $repos);
-                }));
+                $this->addRepositories($repositorySet, \array_filter($initialRepos, fn ($r) => false === \in_array($r, $repos)));
             }
 
             // additional repositories for dependencies
@@ -636,12 +632,9 @@ class PackageSelection
             return $links;
         }
 
-        $packagesFilter = $this->packagesFilter;
         $links = array_filter(
             $links,
-            function (Link $link) use ($packagesFilter) {
-                return in_array($link->getTarget(), $packagesFilter);
-            }
+            fn (Link $link) => in_array($link->getTarget(), $this->packagesFilter)
         );
 
         return array_values($links);

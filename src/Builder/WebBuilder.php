@@ -206,9 +206,7 @@ class WebBuilder extends Builder
      */
     private function getDescSortedVersions(array $packages): array
     {
-        usort($packages, function (PackageInterface $a, PackageInterface $b) {
-            return version_compare($b->getVersion(), $a->getVersion());
-        });
+        usort($packages, static fn (PackageInterface $a, PackageInterface $b) => version_compare($b->getVersion(), $a->getVersion()));
 
         return $packages;
     }
