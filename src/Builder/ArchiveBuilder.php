@@ -38,11 +38,7 @@ class ArchiveBuilder extends Builder
         $this->output->writeln(sprintf("<info>Creating local downloads in '%s'</info>", $basedir));
         $endpoint = $this->config['archive']['prefix-url'] ?? $this->config['homepage'];
         $includeArchiveChecksum = (bool) ($this->config['archive']['checksum'] ?? true);
-        $composerConfig = $this->composer->getConfig();
-        $factory = new Factory();
-        /* @var DownloadManager $downloadManager */
         $downloadManager = $this->composer->getDownloadManager();
-        /* @var ArchiveManager $archiveManager */
         $archiveManager = $this->composer->getArchiveManager();
         $archiveManager->setOverwriteFiles(false);
 

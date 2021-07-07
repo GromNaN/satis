@@ -96,7 +96,7 @@ class PackagesBuilder extends Builder
         foreach ($packagesByName as $packageName => $versionPackages) {
             $stableVersions = [];
             $devVersions = [];
-            foreach ($versionPackages as $version => $versionConfig) {
+            foreach ($versionPackages as $versionConfig) {
                 if ('dev' === VersionParser::parseStability($versionConfig['version'])) {
                     $devVersions[] = $versionConfig;
                 } else {
@@ -175,7 +175,7 @@ class PackagesBuilder extends Builder
         // Get the pruning limit.
         $offset = $this->config['providers-history-size'] ?? 0;
         // Unlink to-be-pruned files.
-        foreach ($pruneFiles as $group => $files) {
+        foreach ($pruneFiles as $files) {
             // Sort to-be-pruned files base on ctime, latest first.
             usort(
                 $files,

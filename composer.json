@@ -56,6 +56,7 @@
         "test": "vendor/bin/phpunit",
         "phpstan": "tools/phpstan/vendor/bin/phpstan",
         "php-cs-fixer": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run",
-        "php-cs-fixer-fix": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix"
+        "php-cs-fixer-fix": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix",
+        "rector": "tools/phpstan/vendor/bin/rector"
     }
 }

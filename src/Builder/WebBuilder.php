@@ -117,8 +117,6 @@ class WebBuilder extends Builder
      * Defines the required packages.
      *
      * @param PackageInterface[] $packages List of packages to dump
-     *
-     * @return $this
      */
     private function setDependencies(array $packages): self
     {

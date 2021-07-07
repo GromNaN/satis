@@ -114,7 +114,7 @@ class PackageSelection
     public function setRepositoryFilter(?string $repositoryFilter, bool $forDependencies = false): void
     {
         $this->repositoryFilter = $repositoryFilter;
-        $this->repositoryFilterDep = (bool) $forDependencies;
+        $this->repositoryFilterDep = $forDependencies;
     }
 
     public function hasRepositoryFilter(): bool
@@ -124,12 +124,12 @@ class PackageSelection
 
     public function hasBlacklist(): bool
     {
-        return count($this->blacklist) > 0;
+        return $this->blacklist !== [];
     }
 
     public function hasTypeFilter(): bool
     {
-        return null !== $this->includeTypes || count($this->excludeTypes) > 0;
+        return null !== $this->includeTypes || $this->excludeTypes !== [];
     }
 
     public function setPackagesFilter(array $packagesFilter = []): void
@@ -139,7 +139,7 @@ class PackageSelection
 
     public function hasFilterForPackages(): bool
     {
-        return count($this->packagesFilter) > 0;
+        return $this->packagesFilter !== [];
     }
 
     /**
@@ -160,7 +160,7 @@ class PackageSelection
         if ($this->hasRepositoryFilter()) {
             $repos = $this->filterRepositories($repos);
 
-            if (0 === count($repos)) {
+            if ([] === $repos) {
                 throw new \InvalidArgumentException(sprintf('Specified repository url "%s" does not exist.', $this->repositoryFilter));
             }
 
@@ -172,7 +172,7 @@ class PackageSelection
         if ($this->hasFilterForPackages()) {
             $repos = $this->filterPackages($repos);
 
-            if (0 === count($repos)) {
+            if ([] === $repos) {
                 throw new \InvalidArgumentException(sprintf('Could not find any repositories config with "name" matching your package(s) filter: %s', implode(', ', $this->packagesFilter)));
             }
         }
@@ -282,7 +282,7 @@ class PackageSelection
 
             $includedPackages = $includedConfig['packages'];
 
-            foreach ($includedPackages as $name => $versions) {
+            foreach ($includedPackages as $versions) {
                 if (!is_array($versions)) {
                     continue;
                 }
@@ -440,7 +440,7 @@ class PackageSelection
 
                     unset($sources[$index]);
 
-                    if (0 === count($sources)) {
+                    if ([] === $sources) {
                         $this->output->writeln(sprintf('<error>%s has no source left after applying the strip-hosts filters and will be removed</error>', $package->getUniqueName()));
 
                         unset($this->selected[$uniqueName]);
@@ -548,7 +548,7 @@ class PackageSelection
 
     private function setSelectedAsAbandoned(): void
     {
-        foreach ($this->selected as $name => $package) {
+        foreach ($this->selected as $package) {
             if (array_key_exists($package->getName(), $this->abandoned)) {
                 $package->setAbandoned($this->abandoned[$package->getName()]);
             }
@@ -571,7 +571,8 @@ class PackageSelection
             foreach ($this->selected as $selectedKey => $package) {
                 foreach ($this->blacklist as $blacklistName => $blacklistConstraint) {
                     $constraint = $parser->parseConstraints($blacklistConstraint);
-                    if ($pool->match($package, $blacklistName, $constraint)) {
+                    $poolMatch = $pool->match($package, $blacklistName, $constraint);
+                    if ($poolMatch) {
                         if ($verbose) {
                             $this->output->writeln('Blacklisted ' . $package->getPrettyName() . ' (' . $package->getPrettyVersion() . ')');
                         }
