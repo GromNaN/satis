@@ -142,7 +142,7 @@ class PackagesBuilder extends Builder
         $this->output->writeln('<info>Pruning include directories</info>');
         $paths = [];
         while ($this->writtenIncludeJsons) {
-            list($hash, $includesUrl) = array_shift($this->writtenIncludeJsons);
+            [$hash, $includesUrl] = array_shift($this->writtenIncludeJsons);
             $path = $this->outputDir . '/' . ltrim($includesUrl, '/');
             $dirname = dirname($path);
             $basename = basename($path);
@@ -156,7 +156,7 @@ class PackagesBuilder extends Builder
         foreach ($paths as $dirname => $entries) {
             foreach (new \DirectoryIterator($dirname) as $file) {
                 foreach ($entries as $entry) {
-                    list($pattern, $hash) = $entry;
+                    [$pattern, $hash] = $entry;
                     if (preg_match($pattern, $file->getFilename(), $matches) && $matches[1] !== $hash) {
                         $group = sprintf(
                             '%s/%s',

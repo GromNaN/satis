@@ -375,7 +375,7 @@ class PackageSelection
                 continue;
             }
 
-            @list($host, $mask) = explode('/', $entry, 2);
+            @[$host, $mask] = explode('/', $entry, 2);
 
             $host = @inet_pton($host);
 
@@ -476,7 +476,7 @@ class PackageSelection
         }
 
         foreach ($this->stripHosts as $pattern) {
-            @list($type, $host, $mask) = $pattern;
+            @[$type, $host, $mask] = $pattern;
 
             if ('/local' === $type) {
                 if (('name' === $urltype && 'localhost' === strtolower($url)) || (
@@ -710,7 +710,7 @@ class PackageSelection
                     $match = $selector->findBestCandidate($name, $link->getConstraint()->getPrettyString());
                     $matches = $match ? [$match] : [];
                 } else {
-                    $matches = $repositorySet->createPoolForPackage($link->getTarget())->whatProvides($name, $link->getConstraint());
+                    $matches = $repositorySet->createPoolForPackages([$link->getTarget()])->whatProvides($name, $link->getConstraint());
                 }
 
                 if (0 === \count($matches)) {
